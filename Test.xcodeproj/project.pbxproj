@@ -15,6 +15,15 @@
 		380652B31C33A73C0048DF17 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 380652B11C33A73C0048DF17 /* LaunchScreen.storyboard */; };
 		380652BE1C33A73C0048DF17 /* TestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 380652BD1C33A73C0048DF17 /* TestTests.m */; };
 		380652C91C33A73C0048DF17 /* TestUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 380652C81C33A73C0048DF17 /* TestUITests.m */; };
+		380652D81C33B0BE0048DF17 /* ZJMensesInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 380652D71C33B0BE0048DF17 /* ZJMensesInfo.m */; };
+		383131D01C3CA24900354DEB /* ZJPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 383131CF1C3CA24900354DEB /* ZJPickerView.m */; };
+		383F746A1C448B43004FBF23 /* ZJScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 383F74691C448B43004FBF23 /* ZJScrollView.m */; };
+		383F74781C44955B004FBF23 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 383F74751C44955B004FBF23 /* 1.png */; };
+		383F74791C44955B004FBF23 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 383F74761C44955B004FBF23 /* 2.png */; };
+		383F747A1C44955B004FBF23 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 383F74771C44955B004FBF23 /* 3.png */; };
+		388D86D81C3A674C00924196 /* ZJMenstrualDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 388D86D71C3A674C00924196 /* ZJMenstrualDateInfo.m */; };
+		38BB2FE41C3CEA140021E1A4 /* ZJDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BB2FE31C3CEA140021E1A4 /* ZJDatePicker.m */; };
+		38BB2FEA1C3CF8C70021E1A4 /* ZJFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BB2FE91C3CF8C70021E1A4 /* ZJFooterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +60,21 @@
 		380652C41C33A73C0048DF17 /* TestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		380652C81C33A73C0048DF17 /* TestUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestUITests.m; sourceTree = "<group>"; };
 		380652CA1C33A73C0048DF17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		380652D61C33B0BE0048DF17 /* ZJMensesInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJMensesInfo.h; sourceTree = "<group>"; };
+		380652D71C33B0BE0048DF17 /* ZJMensesInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJMensesInfo.m; sourceTree = "<group>"; };
+		383131CE1C3CA24900354DEB /* ZJPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJPickerView.h; sourceTree = "<group>"; };
+		383131CF1C3CA24900354DEB /* ZJPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJPickerView.m; sourceTree = "<group>"; };
+		383F74681C448B43004FBF23 /* ZJScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollView.h; sourceTree = "<group>"; };
+		383F74691C448B43004FBF23 /* ZJScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollView.m; sourceTree = "<group>"; };
+		383F74751C44955B004FBF23 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		383F74761C44955B004FBF23 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		383F74771C44955B004FBF23 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		388D86D61C3A674C00924196 /* ZJMenstrualDateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJMenstrualDateInfo.h; sourceTree = "<group>"; };
+		388D86D71C3A674C00924196 /* ZJMenstrualDateInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJMenstrualDateInfo.m; sourceTree = "<group>"; };
+		38BB2FE21C3CEA140021E1A4 /* ZJDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJDatePicker.h; sourceTree = "<group>"; };
+		38BB2FE31C3CEA140021E1A4 /* ZJDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJDatePicker.m; sourceTree = "<group>"; };
+		38BB2FE81C3CF8C70021E1A4 /* ZJFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJFooterView.h; sourceTree = "<group>"; };
+		38BB2FE91C3CF8C70021E1A4 /* ZJFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJFooterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +129,14 @@
 				380652A71C33A73C0048DF17 /* AppDelegate.m */,
 				380652A91C33A73C0048DF17 /* ViewController.h */,
 				380652AA1C33A73C0048DF17 /* ViewController.m */,
+				38BB2FE71C3CF8700021E1A4 /* ZJFooterView */,
+				38BB2FE61C3CEA2D0021E1A4 /* ZJDatePicker */,
+				38BB2FE51C3CEA1B0021E1A4 /* ZJPickerView */,
+				383F74671C448AF8004FBF23 /* ZJScrollView */,
+				383131CD1C3CA22A00354DEB /* 排卵算法 */,
 				380652AC1C33A73C0048DF17 /* Main.storyboard */,
 				380652AF1C33A73C0048DF17 /* Assets.xcassets */,
+				383F74741C44955B004FBF23 /* image */,
 				380652B11C33A73C0048DF17 /* LaunchScreen.storyboard */,
 				380652B41C33A73C0048DF17 /* Info.plist */,
 				380652A31C33A73C0048DF17 /* Supporting Files */,
@@ -138,6 +168,63 @@
 				380652CA1C33A73C0048DF17 /* Info.plist */,
 			);
 			path = TestUITests;
+			sourceTree = "<group>";
+		};
+		383131CD1C3CA22A00354DEB /* 排卵算法 */ = {
+			isa = PBXGroup;
+			children = (
+				380652D61C33B0BE0048DF17 /* ZJMensesInfo.h */,
+				380652D71C33B0BE0048DF17 /* ZJMensesInfo.m */,
+				388D86D61C3A674C00924196 /* ZJMenstrualDateInfo.h */,
+				388D86D71C3A674C00924196 /* ZJMenstrualDateInfo.m */,
+			);
+			name = "排卵算法";
+			sourceTree = "<group>";
+		};
+		383F74671C448AF8004FBF23 /* ZJScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				383F74681C448B43004FBF23 /* ZJScrollView.h */,
+				383F74691C448B43004FBF23 /* ZJScrollView.m */,
+			);
+			name = ZJScrollView;
+			sourceTree = "<group>";
+		};
+		383F74741C44955B004FBF23 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				383F74751C44955B004FBF23 /* 1.png */,
+				383F74761C44955B004FBF23 /* 2.png */,
+				383F74771C44955B004FBF23 /* 3.png */,
+			);
+			path = image;
+			sourceTree = "<group>";
+		};
+		38BB2FE51C3CEA1B0021E1A4 /* ZJPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				383131CE1C3CA24900354DEB /* ZJPickerView.h */,
+				383131CF1C3CA24900354DEB /* ZJPickerView.m */,
+			);
+			name = ZJPickerView;
+			sourceTree = "<group>";
+		};
+		38BB2FE61C3CEA2D0021E1A4 /* ZJDatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				38BB2FE21C3CEA140021E1A4 /* ZJDatePicker.h */,
+				38BB2FE31C3CEA140021E1A4 /* ZJDatePicker.m */,
+			);
+			name = ZJDatePicker;
+			sourceTree = "<group>";
+		};
+		38BB2FE71C3CF8700021E1A4 /* ZJFooterView */ = {
+			isa = PBXGroup;
+			children = (
+				38BB2FE81C3CF8C70021E1A4 /* ZJFooterView.h */,
+				38BB2FE91C3CF8C70021E1A4 /* ZJFooterView.m */,
+			);
+			name = ZJFooterView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +333,9 @@
 				380652B31C33A73C0048DF17 /* LaunchScreen.storyboard in Resources */,
 				380652B01C33A73C0048DF17 /* Assets.xcassets in Resources */,
 				380652AE1C33A73C0048DF17 /* Main.storyboard in Resources */,
+				383F74791C44955B004FBF23 /* 2.png in Resources */,
+				383F74781C44955B004FBF23 /* 1.png in Resources */,
+				383F747A1C44955B004FBF23 /* 3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +361,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				380652AB1C33A73C0048DF17 /* ViewController.m in Sources */,
+				38BB2FE41C3CEA140021E1A4 /* ZJDatePicker.m in Sources */,
+				383F746A1C448B43004FBF23 /* ZJScrollView.m in Sources */,
+				383131D01C3CA24900354DEB /* ZJPickerView.m in Sources */,
+				388D86D81C3A674C00924196 /* ZJMenstrualDateInfo.m in Sources */,
+				38BB2FEA1C3CF8C70021E1A4 /* ZJFooterView.m in Sources */,
 				380652A81C33A73C0048DF17 /* AppDelegate.m in Sources */,
+				380652D81C33B0BE0048DF17 /* ZJMensesInfo.m in Sources */,
 				380652A51C33A73C0048DF17 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -498,6 +594,7 @@
 				380652CF1C33A73C0048DF17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		380652D01C33A73C0048DF17 /* Build configuration list for PBXNativeTarget "TestTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +603,7 @@
 				380652D21C33A73C0048DF17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		380652D31C33A73C0048DF17 /* Build configuration list for PBXNativeTarget "TestUITests" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +612,7 @@
 				380652D51C33A73C0048DF17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
