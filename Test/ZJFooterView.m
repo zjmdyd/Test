@@ -62,7 +62,7 @@
 
 - (void)clickButton:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(footerViewDidClick:)]) {
-        [self.delegate footerViewDidClick:self];        
+        [self.delegate footerViewDidClick:self];
     }
 }
 

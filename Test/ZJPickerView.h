@@ -40,12 +40,13 @@ typedef void(^completionHandle)(BOOL finish);
 @property (nonatomic, weak) id <ZJPickerViewDataSource> dataSource;
 @property (nonatomic, weak) id <ZJPickerViewDelegate> delegate;
 
-- (instancetype)initWithFrame:(CGRect)frame superView:(UIView *)superView;
+- (instancetype)initWithSuperView:(UIView *)superView;
+- (instancetype)initWithSuperView:(UIView *)superView dateSource:(id <ZJPickerViewDataSource>)dataSource delegate:(id <ZJPickerViewDelegate>)delegate;
 
 @property(nonatomic, readonly) NSInteger numberOfComponents;
 
 /**
- *  弹窗顶部view
+ *  弹窗顶部view的背景色
  */
 @property (nonatomic, strong) UIColor *topViewBackgroundColor;
 
@@ -59,8 +60,20 @@ typedef void(^completionHandle)(BOOL finish);
  */
 @property (nonatomic, strong) UIColor *rightButtonTitleColor;
 
-- (void)setHid:(BOOL)hid;
-- (void)setHid:(BOOL)hid comletion:(completionHandle)comletion;
+/**
+ *  弹窗中间提示框颜色
+ */
+@property (nonatomic, strong) UIColor *mentionTitleColor;
+
+- (void)setHidden:(BOOL)hidden comletion:(completionHandle)comletion;
+
+/**
+ *  弹窗时需要显示提示文字时调用该方法
+ *
+ *  @param text 显示在弹出框正上方的文字
+ */
+- (void)showWithMentionText:(NSString *)text;
+- (void)showWithMentionText:(NSString *)text completion:(completionHandle)completion;
 
 - (void)reloadComponent:(NSInteger)component;
 - (void)reloadAllComponents;

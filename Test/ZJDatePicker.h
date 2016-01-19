@@ -31,7 +31,7 @@ typedef void(^completionHandle)(BOOL finish);
 @property (nonatomic, assign) UIDatePickerMode datePickerMode;
 
 /**
- *  弹窗顶部view
+ *  弹窗顶部view背景色
  */
 @property (nonatomic, strong) UIColor *topViewBackgroundColor;
 
@@ -45,8 +45,20 @@ typedef void(^completionHandle)(BOOL finish);
  */
 @property (nonatomic, strong) UIColor *rightButtonTitleColor;
 
-- (void)setHid:(BOOL)hid;
-- (void)setHid:(BOOL)hid comletion:(completionHandle)comletion;
+/**
+ *  弹窗中间提示框颜色
+ */
+@property (nonatomic, strong) UIColor *mentionTitleColor;
+
+- (void)setHidden:(BOOL)hidden comletion:(completionHandle)comletion;
+
+/**
+ *  弹窗时需要显示提示文字时调用该方法
+ *
+ *  @param text 显示在弹出框正上方的文字
+ */
+- (void)showWithMentionText:(NSString *)text;
+- (void)showWithMentionText:(NSString *)text completion:(completionHandle)completion;
 
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;
 

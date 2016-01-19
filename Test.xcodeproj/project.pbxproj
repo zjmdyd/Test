@@ -24,6 +24,7 @@
 		388D86D81C3A674C00924196 /* ZJMenstrualDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 388D86D71C3A674C00924196 /* ZJMenstrualDateInfo.m */; };
 		38BB2FE41C3CEA140021E1A4 /* ZJDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BB2FE31C3CEA140021E1A4 /* ZJDatePicker.m */; };
 		38BB2FEA1C3CF8C70021E1A4 /* ZJFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BB2FE91C3CF8C70021E1A4 /* ZJFooterView.m */; };
+		38E063A41C48EF29000F6990 /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E063A31C48EF29000F6990 /* TestView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		38BB2FE31C3CEA140021E1A4 /* ZJDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJDatePicker.m; sourceTree = "<group>"; };
 		38BB2FE81C3CF8C70021E1A4 /* ZJFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJFooterView.h; sourceTree = "<group>"; };
 		38BB2FE91C3CF8C70021E1A4 /* ZJFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJFooterView.m; sourceTree = "<group>"; };
+		38E063A21C48EF29000F6990 /* TestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestView.h; sourceTree = "<group>"; };
+		38E063A31C48EF29000F6990 /* TestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +132,8 @@
 				380652A71C33A73C0048DF17 /* AppDelegate.m */,
 				380652A91C33A73C0048DF17 /* ViewController.h */,
 				380652AA1C33A73C0048DF17 /* ViewController.m */,
+				38E063A21C48EF29000F6990 /* TestView.h */,
+				38E063A31C48EF29000F6990 /* TestView.m */,
 				38BB2FE71C3CF8700021E1A4 /* ZJFooterView */,
 				38BB2FE61C3CEA2D0021E1A4 /* ZJDatePicker */,
 				38BB2FE51C3CEA1B0021E1A4 /* ZJPickerView */,
@@ -362,6 +367,7 @@
 			files = (
 				380652AB1C33A73C0048DF17 /* ViewController.m in Sources */,
 				38BB2FE41C3CEA140021E1A4 /* ZJDatePicker.m in Sources */,
+				38E063A41C48EF29000F6990 /* TestView.m in Sources */,
 				383F746A1C448B43004FBF23 /* ZJScrollView.m in Sources */,
 				383131D01C3CA24900354DEB /* ZJPickerView.m in Sources */,
 				388D86D81C3A674C00924196 /* ZJMenstrualDateInfo.m in Sources */,

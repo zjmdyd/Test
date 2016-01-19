@@ -17,12 +17,16 @@
 
 #import "ZJScrollView.h"
 
+#import "TestView.h"
+
 @interface ViewController ()<ZJPickerViewDataSource, ZJPickerViewDelegate, ZJScrollViewDelegate> {
     ZJPickerView *_pickerView;
     NSMutableArray *_values;
     
     ZJDatePicker *_datePicker;
     ZJFooterView *_footView;
+    
+    TestView *_testView;
 }
 
 @end
@@ -32,8 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-
-    SEL s = sel_registerName("test5");
+    SEL s = sel_registerName("test2");
     [self performSelector:s withObject:nil afterDelay:0.0];
 }
 
@@ -52,12 +55,19 @@
 - (IBAction)showPickerView:(UIButton *)sender {
     if (_pickerView.isHidden) {
         __weak ZJPickerView *picker = _pickerView;
-        [_pickerView setHid:NO comletion:^(BOOL finish) {
+        [_pickerView showWithMentionText:@"选择" completion:^(BOOL finish) {
             [picker selectRow:3 inComponent:0 animated:YES];
+            _pickerView.leftButtonTitleColor = [UIColor orangeColor];
         }];
     }
     if (_datePicker.isHidden) {
-        [_datePicker setHid:NO];
+        [_datePicker showWithMentionText:@"时间" completion:^(BOOL finish) {
+            _datePicker.leftButtonTitleColor = [UIColor greenColor];
+        }];
+    }
+    
+    if (_testView) {
+        _testView.hidden = !_testView.isHidden;
     }
 }
 
@@ -72,9 +82,9 @@
 }
 
 - (void)test2 {
-    _pickerView = [[ZJPickerView alloc] initWithFrame:self.view.bounds superView:self.view];
-    _pickerView.dataSource = self;
-    _pickerView.delegate = self;
+    _pickerView = [[ZJPickerView alloc] initWithSuperView:self.view dateSource:self delegate:self];
+//    _pickerView.dataSource = self;
+//    _pickerView.delegate = self;
 
     _values = [NSMutableArray array];
     for (int i = 0; i < 10; i++) {
@@ -105,6 +115,12 @@
         zjScrollView.bottomTitles = @[@"哈哈哈", @"呵呵呵呵"];
 
     }
+}
+
+- (void)test6 {
+    _testView = [[TestView alloc] initWithFrame:CGRectMake(100, 100, 150, 150)];
+    _testView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:_testView];
 }
 
 /*
