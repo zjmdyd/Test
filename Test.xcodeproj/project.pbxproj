@@ -21,6 +21,9 @@
 		383F74781C44955B004FBF23 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 383F74751C44955B004FBF23 /* 1.png */; };
 		383F74791C44955B004FBF23 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 383F74761C44955B004FBF23 /* 2.png */; };
 		383F747A1C44955B004FBF23 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 383F74771C44955B004FBF23 /* 3.png */; };
+		384FCA6F1C4E2D4E00C22770 /* RWKnobControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 384FCA6A1C4E2D4E00C22770 /* RWKnobControl.m */; };
+		384FCA701C4E2D4E00C22770 /* RWKnobRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 384FCA6C1C4E2D4E00C22770 /* RWKnobRender.m */; };
+		384FCA711C4E2D4E00C22770 /* RWRotationGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 384FCA6E1C4E2D4E00C22770 /* RWRotationGestureRecognizer.m */; };
 		388D86D81C3A674C00924196 /* ZJMenstrualDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 388D86D71C3A674C00924196 /* ZJMenstrualDateInfo.m */; };
 		38BB2FE41C3CEA140021E1A4 /* ZJDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BB2FE31C3CEA140021E1A4 /* ZJDatePicker.m */; };
 		38BB2FEA1C3CF8C70021E1A4 /* ZJFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BB2FE91C3CF8C70021E1A4 /* ZJFooterView.m */; };
@@ -70,6 +73,12 @@
 		383F74751C44955B004FBF23 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		383F74761C44955B004FBF23 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
 		383F74771C44955B004FBF23 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		384FCA691C4E2D4E00C22770 /* RWKnobControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWKnobControl.h; sourceTree = "<group>"; };
+		384FCA6A1C4E2D4E00C22770 /* RWKnobControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWKnobControl.m; sourceTree = "<group>"; };
+		384FCA6B1C4E2D4E00C22770 /* RWKnobRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWKnobRender.h; sourceTree = "<group>"; };
+		384FCA6C1C4E2D4E00C22770 /* RWKnobRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWKnobRender.m; sourceTree = "<group>"; };
+		384FCA6D1C4E2D4E00C22770 /* RWRotationGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWRotationGestureRecognizer.h; sourceTree = "<group>"; };
+		384FCA6E1C4E2D4E00C22770 /* RWRotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RWRotationGestureRecognizer.m; sourceTree = "<group>"; };
 		388D86D61C3A674C00924196 /* ZJMenstrualDateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJMenstrualDateInfo.h; sourceTree = "<group>"; };
 		388D86D71C3A674C00924196 /* ZJMenstrualDateInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJMenstrualDateInfo.m; sourceTree = "<group>"; };
 		38BB2FE21C3CEA140021E1A4 /* ZJDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJDatePicker.h; sourceTree = "<group>"; };
@@ -138,6 +147,7 @@
 				38BB2FE61C3CEA2D0021E1A4 /* ZJDatePicker */,
 				38BB2FE51C3CEA1B0021E1A4 /* ZJPickerView */,
 				383F74671C448AF8004FBF23 /* ZJScrollView */,
+				384FCA681C4E2D1F00C22770 /* ZJKnobControl */,
 				383131CD1C3CA22A00354DEB /* 排卵算法 */,
 				380652AC1C33A73C0048DF17 /* Main.storyboard */,
 				380652AF1C33A73C0048DF17 /* Assets.xcassets */,
@@ -203,6 +213,19 @@
 				383F74771C44955B004FBF23 /* 3.png */,
 			);
 			path = image;
+			sourceTree = "<group>";
+		};
+		384FCA681C4E2D1F00C22770 /* ZJKnobControl */ = {
+			isa = PBXGroup;
+			children = (
+				384FCA691C4E2D4E00C22770 /* RWKnobControl.h */,
+				384FCA6A1C4E2D4E00C22770 /* RWKnobControl.m */,
+				384FCA6B1C4E2D4E00C22770 /* RWKnobRender.h */,
+				384FCA6C1C4E2D4E00C22770 /* RWKnobRender.m */,
+				384FCA6D1C4E2D4E00C22770 /* RWRotationGestureRecognizer.h */,
+				384FCA6E1C4E2D4E00C22770 /* RWRotationGestureRecognizer.m */,
+			);
+			name = ZJKnobControl;
 			sourceTree = "<group>";
 		};
 		38BB2FE51C3CEA1B0021E1A4 /* ZJPickerView */ = {
@@ -365,13 +388,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				384FCA701C4E2D4E00C22770 /* RWKnobRender.m in Sources */,
 				380652AB1C33A73C0048DF17 /* ViewController.m in Sources */,
+				384FCA6F1C4E2D4E00C22770 /* RWKnobControl.m in Sources */,
 				38BB2FE41C3CEA140021E1A4 /* ZJDatePicker.m in Sources */,
 				38E063A41C48EF29000F6990 /* TestView.m in Sources */,
 				383F746A1C448B43004FBF23 /* ZJScrollView.m in Sources */,
 				383131D01C3CA24900354DEB /* ZJPickerView.m in Sources */,
 				388D86D81C3A674C00924196 /* ZJMenstrualDateInfo.m in Sources */,
 				38BB2FEA1C3CF8C70021E1A4 /* ZJFooterView.m in Sources */,
+				384FCA711C4E2D4E00C22770 /* RWRotationGestureRecognizer.m in Sources */,
 				380652A81C33A73C0048DF17 /* AppDelegate.m in Sources */,
 				380652D81C33B0BE0048DF17 /* ZJMensesInfo.m in Sources */,
 				380652A51C33A73C0048DF17 /* main.m in Sources */,
