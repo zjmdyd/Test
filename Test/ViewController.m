@@ -18,6 +18,7 @@
 #import "ZJScrollView.h"
 
 #import "TestView.h"
+#import "ZJSearchingView.h"
 
 @interface ViewController ()<ZJPickerViewDataSource, ZJPickerViewDelegate, ZJScrollViewDelegate> {
     ZJPickerView *_pickerView;
@@ -27,6 +28,8 @@
     ZJFooterView *_footView;
     
     TestView *_testView;
+    
+    ZJSearchingView *_searchView;
 }
 
 @end
@@ -36,8 +39,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    SEL s = sel_registerName("test2");
+    SEL s = sel_registerName("test7");
     [self performSelector:s withObject:nil afterDelay:0.0];
+/*
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 300, 100, 100)];
+    label.text = @"刚刚";
+    label.backgroundColor = [UIColor whiteColor];
+    label.textColor = [UIColor redColor];
+    [self.view.layer addSublayer:label.layer];  //文字不会添加上去
+ */
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(ZJPickerView *)pickerView {
@@ -69,11 +79,26 @@
     if (_testView) {
         _testView.hidden = !_testView.isHidden;
     }
+    
+    if (_searchView) {
+        _searchView.searching = !_searchView.isSearching;
+        
+        if (_searchView.isSearching) {
+            _searchView.contents = (__bridge id _Nullable)([UIImage imageNamed:@"CALayer"].CGImage);
+            _searchView.lineColor = [UIColor blueColor];
+            _searchView.lineWidth = 5;
+        }else {
+            _searchView.contents = @"hah";//(__bridge id _Nullable)([UIImage imageNamed:@"star"].CGImage);
+            _searchView.lineColor = [UIColor redColor];
+            _searchView.fontSize = 36;
+            _searchView.lineWidth = 5;
+        }
+    }
 }
 
 - (void)test1 {
     ZJMensesInfo *info = [[ZJMensesInfo alloc] initWithBeganDate:[NSDate date] mensesDuraton:7 cycle:28];
-    info.temps = @[@38, @39];
+    info.temps = @[@0, @0];
 
     for (int i = 0; i < info.mensesInfos.count; i++) {
         ZJMenstrualDateInfo *obj = info.mensesInfos[i];
@@ -83,8 +108,6 @@
 
 - (void)test2 {
     _pickerView = [[ZJPickerView alloc] initWithSuperView:self.view dateSource:self delegate:self];
-//    _pickerView.dataSource = self;
-//    _pickerView.delegate = self;
 
     _values = [NSMutableArray array];
     for (int i = 0; i < 10; i++) {
@@ -113,7 +136,6 @@
     if (buttongIndex == 1) {
         zjScrollView.imageNames = @[@"3", @"2", @"1"];
         zjScrollView.bottomTitles = @[@"哈哈哈", @"呵呵呵呵"];
-
     }
 }
 
@@ -121,6 +143,13 @@
     _testView = [[TestView alloc] initWithFrame:CGRectMake(100, 100, 150, 150)];
     _testView.backgroundColor = [UIColor redColor];
     [self.view addSubview:_testView];
+}
+
+- (void)test7 {
+    CGImageRef img = [UIImage imageNamed:@"star"].CGImage;
+    _searchView = [[ZJSearchingView alloc] initWithFrame:CGRectMake(100, 100, 150, 150) content:(__bridge id)(img)];
+    _searchView.clockwise = NO;
+    [self.view addSubview:_searchView];
 }
 
 /*

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  测试隐藏
+ */
 @interface TestView : UIView
-
 
 @end

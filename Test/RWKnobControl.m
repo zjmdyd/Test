@@ -140,7 +140,7 @@
     // 2. Ensure the angle is within a suitable range(控制在2pi之内)
     CGFloat boundedAngle = gesture.touchAngle;      //与手势关联起来的代码
     
-        NSLog(@"bb = %f", boundedAngle);
+    NSLog(@"bb = %f", boundedAngle);
     if(boundedAngle > midPointAngle) {  //如果大于pi/2
         boundedAngle -= 2 * M_PI;
     } else if (boundedAngle < (midPointAngle - 2 * M_PI)) {

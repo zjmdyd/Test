@@ -296,7 +296,7 @@
     NSDateComponents *comps = [NSDate getComponentsWithDate:[NSDate date]];
     NSDateComponents *compsOvum = [NSDate getComponentsWithDate:self.ovumDay];
     
-    long span = labs(comps.day - compsOvum.day);
+    long span = labs(comps.day - compsOvum.day);    // 今天和排卵日的间隔天数
     if (span <= OvumDuration) {
         P1 = C1 - span*0.1;
         if (P1 < FLT_EPSILON) {
@@ -373,7 +373,7 @@ else
  {
     span=0.4
  }
- span—;
+ span —= 0.1;
  if(span>0)
  {
     P2 = P1*(span*3)  [P2 > 0]
