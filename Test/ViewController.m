@@ -39,8 +39,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    SEL s = sel_registerName("test7");
+    SEL s = sel_registerName("test1");
     [self performSelector:s withObject:nil afterDelay:0.0];
+
 /*
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 300, 100, 100)];
     label.text = @"刚刚";
@@ -97,8 +98,8 @@
 }
 
 - (void)test1 {
-    ZJMensesInfo *info = [[ZJMensesInfo alloc] initWithBeganDate:[NSDate date] mensesDuraton:7 cycle:28];
-    info.temps = @[@0, @0];
+    ZJMensesInfo *info = [[ZJMensesInfo alloc] initWithBeganDate:[NSDate date] mensesDuraton:5 cycle:28];
+    info.temps = @[@37, @38];
 
     for (int i = 0; i < info.mensesInfos.count; i++) {
         ZJMenstrualDateInfo *obj = info.mensesInfos[i];

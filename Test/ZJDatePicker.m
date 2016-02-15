@@ -37,9 +37,6 @@
  *  则对象的frame初始值为CGRectZero
  */
 - (instancetype)initWithFrame:(CGRect)frame {
-    if (frame.size.width == 0 || frame.size.height == 0) {
-        frame = [UIScreen mainScreen].bounds;
-    }
     self = [super initWithFrame:frame];
     if (self) {
         [self initSetting];

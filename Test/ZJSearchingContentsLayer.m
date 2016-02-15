@@ -64,6 +64,9 @@
     [self reDrawText];
 }
 
+/**
+ *  改变CATextLayer的文本方法1
+ */
 - (void)reDrawText {
     CGRect rect = [_contents boundingRectWithSize:self.textLayer.bounds.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.font} context:nil];
     self.textLayer.frame = rect;
@@ -73,6 +76,27 @@
     self.textLayer.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
 }
 
+/**
+ *  改变CATextLayer的文本方法2
+ */
+/*
+- (void) drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
+    CGContextSetFillColorWithColor(ctx, [[UIColor darkTextColor] CGColor]);
+    
+    UIGraphicsPushContext(ctx);
+    [word drawInRect:layer.bounds
+     withFont:[UIFont systemFontOfSize:32]
+     lineBreakMode:UILineBreakModeWordWrap
+     alignment:UITextAlignmentCenter];
+    
+    [word drawAtPoint:CGPointMake(30.0f, 30.0f)
+             forWidth:200.0f
+             withFont:[UIFont boldSystemFontOfSize:32]
+        lineBreakMode:UILineBreakModeClip];
+    
+    UIGraphicsPopContext();
+}
+*/
 - (void)setFontSize:(CGFloat)fontSize {
     _fontSize = fontSize;
     _font = [UIFont fontWithName:_font.fontName size:_fontSize];

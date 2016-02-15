@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  测试隐藏
+ *  测试隐藏属性
  */
 @interface TestView : UIView
 
