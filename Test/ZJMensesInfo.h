@@ -24,12 +24,26 @@
  */
 - (ZJMensesInfo *)initWithBeganDate:(NSDate *)beganDate mensesDuraton:(NSInteger)duration cycle:(NSInteger)cycle;
 
+/**
+ *  ZJMenstrualDateInfo类型
+ */
 @property (nonatomic, strong, readonly) NSArray *mensesInfos;
 
 /**
  *  体温数组:前一天和当天的体温, 数组元素个数 = 2个
  */
 @property (nonatomic, strong) NSArray *temps;
+
+/**
+ *  获取一个月的月经信息
+ *
+ *  @param beganDate 月经开始时间
+ *  @param duration  月经持续时间
+ *  @param cycle     月经周期
+ *
+ *  @return return value description
+ */
++ (NSArray *)mensesMonthInfoWithBeganDate:(NSDate *)date mensesDuraton:(NSInteger)duration cycle:(NSInteger)cycle;
 
 @end
 

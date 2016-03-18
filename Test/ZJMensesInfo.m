@@ -23,9 +23,9 @@
     return NO;
 }
 
-+ (NSDateComponents *)getComponentsWithDate:(NSDate *)date {
+- (NSDateComponents *)components {
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *comps = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
+    NSDateComponents *comps = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:self];
     
     return comps;
 }
@@ -35,7 +35,19 @@
 }
 
 - (NSInteger)getDaySpanSinceDate:(NSDate *)date {
-    return [self timeIntervalSinceDate:date] / (3600*24);
+    float span = [self timeIntervalSinceDate:date] / (3600*24);
+
+    if (span > 0) {
+        if (span + 0.5 > ceil(span)) {
+            span = ceil(span);
+        }
+    }else {
+        if (span - 0.5 < floorf(span)) {
+            span = floorf(span);
+        }
+    }
+
+    return (NSInteger)span;
 }
 
 @end
@@ -43,9 +55,9 @@
 @interface ZJMensesInfo ()
 
 /**
- *  黄体期持续天数
+ *  黄体期持续天数:月经后 一般为2天，根据月经持续时间和前7后8计算
  */
-@property (nonatomic, assign) NSInteger lutealDuration;
+@property (nonatomic, assign) NSInteger lutealDurationAfterMenses;
 
 /**
  *  当月 月经信息总天数
@@ -53,14 +65,19 @@
 @property (nonatomic, assign) NSInteger mensesTotalDuration;
 
 /**
- *  排卵日
- */
-@property (nonatomic, strong, readonly) NSDate *ovumDay;
-
-/**
  *  当日的类型
  */
 @property (nonatomic, assign) MensesInfoType mensesInfoTypeOfToday;
+
+/**
+ *  排卵日:月经后
+ */
+@property (nonatomic, strong, readonly) NSDate *ovumDayAfterMenses;
+
+/**
+ *  每月的月经信息
+ */
+@property (nonatomic, strong) NSArray *mensesInfoOfMonth;
 
 @end
 
@@ -69,12 +86,13 @@
 #define EmptyDuration 3     //  填充的天数
 #define MensesDuration 7    //  月经默认持续天数
 #define MensesCycle 28      //  月经默认周期
-#define OvumDuration 5      //  排卵期默认天数
+#define OvumDuration 10     //  排卵期默认天数
+#define LutealDuration 9    //  黄体期天数:月经前的
 
 @implementation ZJMensesInfo
 
 @synthesize mensesInfos = _mensesInfos;
-@synthesize ovumDay = _ovumDay;
+@synthesize ovumDayAfterMenses = _ovumDayAfterMenses;
 
 #pragma mark -  初始化方法
 
@@ -82,12 +100,11 @@
     self = [super init];
     if (self) {
         /*
-            该对象的默认值设置不能用属性赋值,只能使用实例变量,因为调用setter方法会调用resetValue方法
+         该对象的默认值设置不能用属性赋值,只能使用实例变量,因为调用setter方法会调用resetValue方法
          */
         _beganDate = [NSDate date];
         _mensesDuration = MensesDuration;
         _cycle = MensesCycle;
-        _mensesInfoTypeOfToday = -1;
     }
     return self;
 }
@@ -95,38 +112,39 @@
 - (ZJMensesInfo *)initWithBeganDate:(NSDate *)beganDate mensesDuraton:(NSInteger)duration cycle:(NSInteger)cycle {
     self = [super init];
     if (self) {
-        if (beganDate) {
-            NSLog(@"%@", [NSDate date]);
-            _beganDate = [NSDate getDateWithDaySpan:1 sinceDate:[NSDate date]];//beganDate;//
-        }else {
-            _beganDate = [NSDate date];
-        }
-        
-        if (duration > 0) {
-            _mensesDuration = duration;
-        }else {
-            _mensesDuration = MensesDuration;
-        }
+        _mensesDuration = duration>0 ? duration:MensesDuration;
+        _cycle = (cycle>0 && cycle<LutealDuration) ? cycle:MensesCycle;
+        _beganDate = [self transformBeganDate:[NSDate getDateWithDaySpan:3 sinceDate:[NSDate date]]];
+    }
 
-        if (cycle > 0) {
-            _cycle = cycle;
-        }else {
-            _cycle = MensesCycle;
-        }
-        _mensesInfoTypeOfToday = -1;
+    return self;
+}
+
+- (NSDate *)transformBeganDate:(NSDate *)beganDate {
+    if (!beganDate) {
+        return [NSDate date];
     }
     
-    return self;
+    NSDate *today = [NSDate date];
+    NSDateComponents *comp1 = [beganDate components];
+    NSDateComponents *comp2 = [today components];
+    if (comp1.month != comp2.month && comp1.year == comp2.year) {
+        NSInteger span = [today getDaySpanSinceDate:beganDate];
+        NSDate *date = [NSDate getDateWithDaySpan:(span/self.cycle)*self.cycle sinceDate:beganDate];
+        return [self transformBeganDate:[NSDate getDateWithDaySpan:labs(span)/span*self.cycle sinceDate:date]];
+    }
+    
+    return beganDate;
 }
 
 #pragma mark - setter
 
 /**
-    重新对_beganDate、_duration、_cycle任一值赋值，都调用resetValue方法
+ 重新对_beganDate、_duration、_cycle任一值赋值，都调用resetValue方法
  */
 - (void)setBeganDate:(NSDate *)beganDate {
     if (!beganDate) {
-        _beganDate = [NSDate date];
+        beganDate = [NSDate date];
     }
     _beganDate = beganDate;
     
@@ -147,12 +165,12 @@
         cycle = MensesCycle;
     }
     _cycle = cycle;
-
+    
     [self resetValue];
 }
 
 /**
- *  体温数组元素个数2个,当天体温和前一天体温
+ *  体温数组元素个数:2个,当天体温和前一天体温
  *  @param temps 根据体温算出排卵概率
  */
 - (void)setTemps:(NSArray *)temps {
@@ -170,82 +188,95 @@
 
 #pragma mark - getter
 
+/**
+ *  下一个排卵日D= d1+n-14
+ *  概率计算根据这个日期来计算
+ */
+- (NSDate *)ovumDayAfterMenses {
+    if (!_ovumDayAfterMenses) {
+        _ovumDayAfterMenses = [NSDate getDateWithDaySpan:self.cycle-14 sinceDate:_beganDate];
+    }
+    return _ovumDayAfterMenses;
+}
+
+/**
+ *  前七后八,包含月经当天共9天
+ */
+- (NSInteger)lutealDurationAfterMenses {
+    _lutealDurationAfterMenses = LutealDuration - self.mensesDuration;
+    
+    return _lutealDurationAfterMenses;
+}
+
 - (NSArray *)mensesInfos {
     if (!_mensesInfos) {
         NSMutableArray *ary = [NSMutableArray array];
-        
         NSInteger count = 0;
-        
-        NSInteger span = [_beganDate getDaySpanSinceDate:[NSDate date]] % _cycle; // 月经开始时间离今天有几天
-        
-        if (self.mensesInfoTypeOfToday == MensesInfoTypeOfMenstrual) {          // 经期
-            count = self.lutealDuration + OvumDuration;
-        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLuteal) {       // 黄体期
-            if (span > 0) { // 今天 --> 月经开始
-                count = _mensesDuration + OvumDuration + self.lutealDuration;
-            }else {         // 月经开始 --> 今天
-                count = 0;
-            }
-        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfOvumRelease) {  // 排卵期
-            if (span > 0) { // 今天 --> 月经开始
-                count = self.lutealDuration*2 + _mensesDuration + OvumDuration;
-            }else {         // 月经开始 --> 今天
-                count = self.lutealDuration;
-            }
+
+        // 算出经期(包含经期)后面的总天数,
+        if (self.mensesInfoTypeOfToday == MensesInfoTypeOfMenstrual) {                  // 经期
+            count = self.mensesDuration + self.lutealDurationAfterMenses + OvumDuration;
+        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLutealAfterMenses) {    // 黄体期(月经后)
+            count = self.mensesDuration + self.lutealDurationAfterMenses + OvumDuration + LutealDuration;
+        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfOvumRelease) {          // 排卵期
+            count = self.mensesDuration;
+        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLutealBeforeMenses) {   // 黄体期(月经前)
+            count = self.mensesDuration + self.lutealDurationAfterMenses + OvumDuration;
         }
-        
+       
         count += EmptyDuration;
-        NSDate *totalBeganDate = [NSDate getDateWithDaySpan:-count sinceDate:_beganDate];
         
         for (int i = 0; i < self.mensesTotalDuration; i++) {
             ZJMenstrualDateInfo *info = [ZJMenstrualDateInfo new];
             [ary addObject:info];
             
-            info.date = [NSDate getDateWithDaySpan:i sinceDate:totalBeganDate];
+            info.date = [NSDate getDateWithDaySpan:(i - (self.mensesTotalDuration - count)) sinceDate:_beganDate];
             if (i < 3 || i >= self.mensesTotalDuration - 3) {
                 info.type = MensesInfoTypeOfDefault;
             }else {
                 info.type = [self getMensesInfoTypeWithDate:info.date];
             }
-            info.isOvumDay = [info.date isEqualToDate:self.ovumDay];
+            
+            if (labs([info.date getDaySpanSinceDate:_beganDate]) == self.cycle-14) {
+                info.isOvumDay = YES;
+            }
             info.isToDay = [info.date isEqualToDate:[NSDate date]];
         }
         
-        _mensesInfos = [ary copy];
+        _mensesInfos = [ary mutableCopy];
     }
     return _mensesInfos;
 }
 
 /**
- *  获取类型
+ *  获取某个日期的MensesType
  */
 - (MensesInfoType)getMensesInfoTypeWithDate:(NSDate *)date {
-    NSInteger span = [date getDaySpanSinceDate:_beganDate] % (_mensesDuration + self.lutealDuration + OvumDuration);
-    if (span >= 0) {
-        if (span < _mensesDuration) {
+    NSInteger span = [date getDaySpanSinceDate:_beganDate];
+    if (span >= 0) {    /// _beganDate --> date，从月经开始时间向后数
+        if (span < self.mensesDuration) {
             return MensesInfoTypeOfMenstrual;
-        }else if (span < _mensesDuration + OvumDuration) {
+        }else if (span < self.mensesDuration + self.lutealDurationAfterMenses) {
+            return MensesInfoTypeOfLutealAfterMenses;
+        }else if (span < self.mensesDuration + self.lutealDurationAfterMenses + OvumDuration) {
             return MensesInfoTypeOfOvumRelease;
+        }else if (span < self.mensesDuration + self.lutealDurationAfterMenses + OvumDuration + LutealDuration) {
+            return MensesInfoTypeOfLutealBeforeMenses;
         }else {
-            return MensesInfoTypeOfLuteal;
+            return MensesInfoTypeOfMenstrual;
         }
-    }else {
+    }else {         /// date --> _beganDate，从月经开始时间向前数
         NSInteger span2 = labs(span);
-        if (span2 <= self.lutealDuration) {
-            return MensesInfoTypeOfLuteal;
-        }else if (span2 <= self.lutealDuration + OvumDuration) {
+        if (span2 <= LutealDuration) {                       // 9
+            return MensesInfoTypeOfLutealBeforeMenses;
+        }else if (span2 <= LutealDuration + OvumDuration) {  // 19
             return MensesInfoTypeOfOvumRelease;
+        }else if (span2 <= LutealDuration + OvumDuration + self.lutealDurationAfterMenses) { // 21
+            return MensesInfoTypeOfLutealAfterMenses;
         }else {
             return MensesInfoTypeOfMenstrual;
         }
     }
-}
-
-- (NSInteger)lutealDuration {
-    if (_lutealDuration <= 0) {
-        _lutealDuration = _cycle - _mensesDuration - OvumDuration;
-    }
-    return _lutealDuration;
 }
 
 /**
@@ -253,66 +284,67 @@
  */
 - (NSInteger)mensesTotalDuration {
     if (_mensesTotalDuration <= 0) {
-        if (self.mensesInfoTypeOfToday == MensesInfoTypeOfOvumRelease) {
-            _mensesTotalDuration = (EmptyDuration + _mensesDuration + self.lutealDuration) * 2 + OvumDuration;
-        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLuteal) {
-            _mensesTotalDuration = (EmptyDuration + _mensesDuration + OvumDuration) * 2 + self.lutealDuration;
-        }else {
-            _mensesTotalDuration = (EmptyDuration + self.lutealDuration + OvumDuration) * 2 + _mensesDuration;
+        if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLutealAfterMenses) {
+            _mensesTotalDuration = LutealDuration*2 + self.mensesDuration + OvumDuration + self.lutealDurationAfterMenses;
+        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfOvumRelease) {          /// OK
+            _mensesTotalDuration =  self.mensesDuration*2 + self.lutealDurationAfterMenses + OvumDuration + LutealDuration;
+        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLutealBeforeMenses) {   /// OK
+            _mensesTotalDuration =  self.lutealDurationAfterMenses*2 + OvumDuration*2 + LutealDuration + self.mensesDuration;
+        }else {                                                                         /// OK
+            _mensesTotalDuration = OvumDuration*2 + LutealDuration +self.lutealDurationAfterMenses + self.mensesDuration;
         }
+        
+        _mensesTotalDuration += 2*EmptyDuration;
     }
+    
     return _mensesTotalDuration;
 }
 
+/**
+ *  当天的MensesType
+ */
 - (MensesInfoType)mensesInfoTypeOfToday {
-    if (_mensesInfoTypeOfToday < 0) {
-        NSInteger span = [_beganDate getDaySpanSinceDate:[NSDate date]] % _cycle; // 月经开始时间离今天有几天
-        if (span > 0) {     // 今天 --> 月经开始时间
-            if (span < self.lutealDuration) {
-                _mensesInfoTypeOfToday = MensesInfoTypeOfLuteal;
-            }else if (span < self.lutealDuration + OvumDuration) {
+    /// 月经开始时间离今天有几天
+    if (_mensesInfoTypeOfToday <= 0) {
+        NSInteger span = [_beganDate getDaySpanSinceDate:[NSDate date]];
+        if (span > 0) {     // 今天 --> 月经开始时间, 从月经开始时间向后数
+            if (span <= LutealDuration) {                           // 9
+                _mensesInfoTypeOfToday = MensesInfoTypeOfLutealBeforeMenses;    // 多加一个排卵期
+            }else if (span <= LutealDuration + OvumDuration) {      // 19
                 _mensesInfoTypeOfToday = MensesInfoTypeOfOvumRelease;
+            }else if (span <= LutealDuration + OvumDuration + self.lutealDurationAfterMenses) {
+                _mensesInfoTypeOfToday = MensesInfoTypeOfLutealAfterMenses;
+                
+                NSInteger sp = [_beganDate getDaySpanSinceDate:[NSDate date]];
+                if (sp > OvumDuration + LutealDuration) {
+                    _beganDate = [NSDate getDateWithDaySpan:-self.cycle sinceDate:_beganDate];
+                }
             }else {
-                _mensesInfoTypeOfToday = MensesInfoTypeOfMenstrual;
+                _mensesInfoTypeOfToday = MensesInfoTypeOfMenstrual; /// 出现这种情况:当天是2月1号-7号，began=2月29
+                _beganDate = [NSDate getDateWithDaySpan:-self.cycle sinceDate:_beganDate];  // 29号 --> 1号
             }
         }else {             // 经期 --> 今天
             NSInteger sp = labs(span);
-            if (sp < _mensesDuration) {
+            if (sp < self.mensesDuration) {                                         // 7
                 _mensesInfoTypeOfToday = MensesInfoTypeOfMenstrual;
-            }else if (sp < _mensesDuration + OvumDuration) {
+            }else if (sp < self.mensesDuration + self.lutealDurationAfterMenses) {  // 9
+                _mensesInfoTypeOfToday = MensesInfoTypeOfLutealAfterMenses;
+            }else if (sp < self.mensesDuration + self.lutealDurationAfterMenses + OvumDuration) {   // 19
                 _mensesInfoTypeOfToday = MensesInfoTypeOfOvumRelease;
+                NSInteger span = [_beganDate getDaySpanSinceDate:[NSDate date]];
+                if (span < 0) {
+                    _beganDate = [NSDate getDateWithDaySpan:self.cycle sinceDate:_beganDate];
+                }
+            }else if (sp < self.lutealDurationAfterMenses + OvumDuration + LutealDuration) {
+                _mensesInfoTypeOfToday = MensesInfoTypeOfLutealBeforeMenses;
             }else {
-                _mensesInfoTypeOfToday = MensesInfoTypeOfLuteal;
+                _mensesInfoTypeOfToday = MensesInfoTypeOfMenstrual;
+                _beganDate = [NSDate getDateWithDaySpan:self.cycle sinceDate:_beganDate];   ///出现这种情况:began在上个月，今天在下个月
             }
         }
     }
     
     return _mensesInfoTypeOfToday;
-}
-
-- (NSDate *)ovumDay {
-    if (!_ovumDay) {
-        NSInteger span = [_beganDate getDaySpanSinceDate:[NSDate date]] % _cycle; // 月经开始时间离今天有几天
-
-        if (self.mensesInfoTypeOfToday == MensesInfoTypeOfMenstrual) {
-            _ovumDay = [NSDate getDateWithDaySpan:_mensesDuration + OvumDuration/2 sinceDate:_beganDate];
-        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfOvumRelease) {
-            if (span > 0) { // 今天 --> 月经开始
-                NSDate *beganDate = [NSDate getDateWithDaySpan:-_cycle sinceDate:_beganDate];
-                _ovumDay = [NSDate getDateWithDaySpan:_mensesDuration + OvumDuration/2 sinceDate:beganDate];
-            }else {
-                _ovumDay = [NSDate getDateWithDaySpan:_mensesDuration + OvumDuration/2 sinceDate:_beganDate];
-            }
-        }else if (self.mensesInfoTypeOfToday == MensesInfoTypeOfLuteal) {
-            if (span > 0) { // 今天 --> 月经开始
-                _ovumDay = [NSDate getDateWithDaySpan:_mensesDuration + OvumDuration/2 sinceDate:_beganDate];
-            }else {
-                NSDate *beganDate = [NSDate getDateWithDaySpan:_cycle sinceDate:_beganDate];
-                _ovumDay = [NSDate getDateWithDaySpan:_mensesDuration + OvumDuration/2 sinceDate:beganDate];
-            }
-        }
-    }
-    return _ovumDay;
 }
 
 /**
@@ -331,15 +363,14 @@
 - (float)getCycleProbility {
     float P1 = 0;
     
-    NSDateComponents *comps = [NSDate getComponentsWithDate:[NSDate date]];
-    NSDateComponents *compsOvum = [NSDate getComponentsWithDate:self.ovumDay];
-    
-    long span = labs(comps.day - compsOvum.day);    // 今天和排卵日的间隔天数
+    long span = labs([self.ovumDayAfterMenses getDaySpanSinceDate:[NSDate date]]);
     if (span <= OvumDuration) {
         P1 = C1 - span*0.1;
-        if (P1 < FLT_EPSILON) {
-            return 0;
+        if (P1 <= FLT_EPSILON) {
+            P1 = 0.01;
         }
+    }else {
+        P1 = 0.01;
     }
     
     return P1;
@@ -367,36 +398,71 @@
 }
 
 - (void)resetValue {
-    _ovumDay = nil;
+    _ovumDayAfterMenses = nil;
     _mensesInfos = nil;
-    _lutealDuration = 0;
     _mensesTotalDuration = 0;
-    _mensesInfoTypeOfToday = -1;
+    _mensesInfoTypeOfToday = MensesInfoTypeOfDefault;
+}
+
+#pragma mark - 每月的月经信息
+
++ (NSArray *)mensesMonthInfoWithBeganDate:(NSDate *)date mensesDuraton:(NSInteger)duration cycle:(NSInteger)cycle {
+    ZJMensesInfo *info =  [[ZJMensesInfo alloc] init];
+    info.mensesDuration = duration>0 ? duration:MensesDuration;
+    info.cycle = (cycle>0 && cycle<LutealDuration) ? cycle:MensesCycle;
+    info.beganDate = [NSDate getDateWithDaySpan:-250 sinceDate:[NSDate date]];//date?:[NSDate date];
+
+    return info.mensesInfoOfMonth;
+}
+
+- (NSArray *)mensesInfoOfMonth {
+    if (!_mensesInfoOfMonth) {
+        NSCalendar *cal = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+        NSRange range = [cal rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:_beganDate];
+        NSDateComponents *com = [_beganDate components];
+        NSMutableArray *ary = [NSMutableArray array];
+        for (int i = 0; i < range.length; i++) {
+            ZJMenstrualDateInfo *info = [ZJMenstrualDateInfo new];
+            [ary addObject:info];
+            
+            com.day = i+2;  // 加1差1天 不知道为什么加2就对了
+            info.date = [cal dateFromComponents:com];
+            info.type = [self getMensesInfoTypeWithDate:info.date];
+            
+            if (labs([info.date getDaySpanSinceDate:_beganDate]) == self.cycle-14) {
+                info.isOvumDay = YES;
+            }
+            info.isToDay = [info.date isEqualToDate:[NSDate date]];
+        }
+        _mensesInfoOfMonth = [ary mutableCopy];
+    }
+    
+    return _mensesInfoOfMonth;
 }
 
 /*
-排卵概率算法(结果单位:百分比):
-周期推算法:占比c1=45%
-体温推算法:占比c2=45%
-P=P1+P2
-
-周期推算法(结果单位:百分比):
-本次月经第一天d1(已知,用户每次输入,或用上次输入根据周期推算,至少有一次输入)
-月经周期n(已知,首次必须输入)
-排卵日D= d1+n-14
-当前排卵日期now
-if(|now-D|<=5)
-{
-    P1=c1-|now-D|*10%
-    if(P1<0)
-    {
-        P1=0%;
-    }
-}
-else
-{
-    P1=0%;
-}
+ 排卵概率算法(结果单位:百分比):
+ 周期推算法:占比c1=45%
+ 体温推算法:占比c2=45%
+ P=P1+P2
+ 
+ 周期推算法(结果单位:百分比):
+ 本次月经第一天d1(已知,用户每次输入,或用上次输入根据周期推算,至少有一次输入)
+ 月经周期n(已知,首次必须输入)
+ 排卵日D= d1+n-14
+ 当前排卵日期now
+ if(|now-D|<=5)
+ {
+ P1=c1-|now-D|*10%
+ if(P1<0)
+ {
+ P1=0%;
+ }
+ }
+ else
+ {
+ P1=0%;
+ }
  */
 /*
  体温推算法(结果单位:百分比):
@@ -410,16 +476,16 @@ else
  span = Tnow - Tbefore;
  if(span>0.4)
  {
-    span=0.4
+ span=0.4
  }
- span —= 0.1;
+ span—;
  if(span>0)
  {
-    P2 = P1*(span*3)  [P2 > 0]
+ P2 = P1*(span*3)  [P2 > 0]
  }
  else
  {
-    P2=0%
+ P2=0%
  }
  */
 @end

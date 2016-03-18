@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, MensesInfoType) {
-    MensesInfoTypeOfDefault,        // 无效填充期
-    MensesInfoTypeOfLuteal,         // 黄体期
-    MensesInfoTypeOfMenstrual,      // 月经期
-    MensesInfoTypeOfOvumRelease,    // 排卵期
+    MensesInfoTypeOfDefault,            // 无效填充期
+    MensesInfoTypeOfLutealAfterMenses,  // 黄体期:月经后
+    MensesInfoTypeOfOvumRelease,        // 排卵期
+    MensesInfoTypeOfLutealBeforeMenses, // 黄体期:月经前
+    MensesInfoTypeOfMenstrual,          // 月经期
 };
 
 @interface ZJMenstrualDateInfo : NSObject
@@ -30,7 +31,6 @@ typedef NS_ENUM(NSInteger, MensesInfoType) {
  *  是否是排卵日
  */
 @property (nonatomic, assign) BOOL isOvumDay;
-
 
 /**
  *  排卵概率(当前日期now)

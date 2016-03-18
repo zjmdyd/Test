@@ -98,6 +98,13 @@
 }
 
 - (void)test1 {
+//    NSArray *infos = [ZJMensesInfo mensesMonthInfoWithBeganDate:[NSDate date] mensesDuraton:5 cycle:28];
+//    
+//    for (int i = 0; i < infos.count; i++) {
+//        ZJMenstrualDateInfo *obj = infos[i];
+//        NSLog(@"date = %@, i = %d, type = %zd", obj.date, i, obj.type);
+//    }
+    
     ZJMensesInfo *info = [[ZJMensesInfo alloc] initWithBeganDate:[NSDate date] mensesDuraton:5 cycle:28];
     info.temps = @[@37, @38];
 
